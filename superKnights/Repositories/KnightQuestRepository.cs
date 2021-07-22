@@ -21,7 +21,12 @@ namespace superKnights.Repositories
       (knightId, questId)
       VALUES
       (@KnightId, @QuestId);
-      SELECT LAST_INSERT_ID();";
+      SELECT LAST_INSERT_ID();
+      
+
+      ";
+
+
       int id = _db.ExecuteScalar<int>(sql, data);
       data.Id = id;
       return data;
@@ -36,7 +41,7 @@ namespace superKnights.Repositories
       FROM knight_quest kq
       JOIN knights k ON k.id = kq.knightId
       WHERE kq.questId = @questId;";
-      return _db.Query<KnightQuest, Knight, KnightQuest>(sql, (kq, k) =>
+      return _db.Query<Knight, KnightQuest, KnightQuest>(sql, (k, kq) =>
       {
         kq.Knight = k;
         return kq;
